@@ -20,7 +20,7 @@ namespace SportsStore.Controllers
         }
 
         public ViewResult List(string category, int productPage = 1)
-        {
+        {      
             var model = new ProductsListViewModel
             {
                 Products = repository.Products
@@ -32,13 +32,18 @@ namespace SportsStore.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-
-
-                    TotalItems = repository.Products.Count()
+                    TotalItems = category==null?
+                    repository.Products.Count():
+                    repository.Products.Where(e=>e.Category==category).Count()
                 },
                 CurrentCategory = category
             };
             return View(model);
+        }
+
+        public ActionResult StronyStatyczne(string name)
+        {
+            return View(name);
         }
     }
 }

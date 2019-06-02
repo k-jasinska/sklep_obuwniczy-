@@ -23,6 +23,8 @@ namespace SportsStore
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportsStoreProducts:ConnectionString"]));
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -30,6 +32,7 @@ namespace SportsStore
             app.UseDeveloperExceptionPage();    //szczególy wyjatku
             app.UseStatusCodePages();   //404
             app.UseStaticFiles();   //wlacza obsluge css i js w root
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(        //trasa
@@ -54,9 +57,16 @@ namespace SportsStore
                     defaults: new { controller = "Product", action = "List" , productPage=1});
 
 
+                routes.MapRoute(        //trasa
+                    name: "StronyStatyczne",
+                    template: "strony/{name}",
+                    defaults: new { controller = "Product", action = "StronyStatyczne"});
+
+
                 routes.MapRoute(
-                    name: null,
-                    template: "{controller}/{action}/{id?}");
+                    name: "Default",
+                    template: "{controller}/{action}/{id?}"
+                    );
             });
             SeedData.EnsurePopulated(app);
         }
