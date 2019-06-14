@@ -4,11 +4,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link asp-href-include="lib/bootstrap/dist/**/*.min.css" rel="stylesheet" asp-href-exclude="**.*-reebot*,**.*-grid*" />
+    <link rel="stylesheet" asp-href-include="lib/font-awesome/css/*.css" />
     <title>@ViewBag.Title -Store</title>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark" role="navigation">
         <a class="navbar-brand" href="@Url.Content("~/")">Sklep obuwniczy</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,6 +24,9 @@
                     <a class="nav-link" href="@Url.Action("StronyStatyczne","Product", new {name="Regulations" })">Regulamin</a>
                 </li>
             </ul>
+            <div>
+                @await Component.InvokeAsync("CartSummary")
+            </div>
         </div>
     </nav>
 
@@ -36,7 +40,7 @@
         </div>
     </div>
 
-    <footer class="page-footer font-small blue pt-4 fixed-bottom">
+    <footer class="page-footer font-small blue pt-4 bottom">
         <div class="footer-copyright text-center py-3">
             Copyright &copy; @DateTime.Now.Year
         </div>

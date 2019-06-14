@@ -28,6 +28,7 @@ namespace SportsStore.Controllers
                 .OrderBy(p => p.ProductID)    //ukłądamy w koljnosci klucza
                 .Skip((productPage - 1) * PageSize) //pomijamy produkty znajdujace sie przed strona
                 .Take(PageSize),   //odczytujemy tyle produktow ile wskazuje zmienna
+
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = productPage,
@@ -36,6 +37,7 @@ namespace SportsStore.Controllers
                     repository.Products.Count():
                     repository.Products.Where(e=>e.Category==category).Count()
                 },
+
                 CurrentCategory = category
             };
             return View(model);
@@ -44,6 +46,11 @@ namespace SportsStore.Controllers
         public ActionResult StronyStatyczne(string name)
         {
             return View(name);
+        }
+        public ActionResult Description(int id)
+        {
+            var produkt = repository.Products.Where(p => p.ProductID == id).FirstOrDefault();
+            return View(produkt);
         }
     }
 }

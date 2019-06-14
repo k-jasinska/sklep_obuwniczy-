@@ -1,0 +1,41 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Zamówienie";
+}
+
+<h2>Wysyłka</h2>
+<p>Prosze podać swoje dane do wysyłki!</p>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-action="Checkout">
+    <h4>Nabywca</h4>
+    <div class="form-group">
+        <label>Imie i nazwisko: </label><input asp-for="Name"  class="form-control"/>
+    </div>
+    <h4>Adres</h4>
+    <div class="form-group">
+        <label>Adres: </label><input class="form-control" asp-for="Address" />
+    </div>
+    <div class="form-group">
+        <label>Miejscowość: </label><input class="form-control" asp-for="City" />
+    </div>
+    <div class="form-group">
+        <label>Województwo: </label><input class="form-control" asp-for="State" />
+    </div>
+    <div class="form-group">
+        <label>Kod pocztowy: </label><input class="form-control" asp-for="Zip" />
+    </div>
+    <div class="form-group">
+        <label>Kraj: </label><input class="form-control" asp-for="Country" />
+    </div>
+    <h4>Opcje</h4>
+    <div class="checkbox">
+        <label>
+            <input asp-for="GiftWrap" />Zapakować
+        </label>
+    </div>
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Złóż zamówienie" />
+    </div>
+</form>

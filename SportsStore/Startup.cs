@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using SportsStore.Models;
 
 namespace SportsStore
@@ -22,6 +24,9 @@ namespace SportsStore
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:SportsStoreProducts:ConnectionString"]));
             services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));        //wskazuje powizanie żądań, lambda spełnia zadania cart
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();     //dodanie usługi, wymagana do uzyskania dostępu do beirzącej sesji z poziomu klasy SessionCart, (dzieki temu mozemy oproscic kontroler)
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
             services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
@@ -32,6 +37,13 @@ namespace SportsStore
             app.UseDeveloperExceptionPage();    //szczególy wyjatku
             app.UseStatusCodePages();   //404
             app.UseStaticFiles();   //wlacza obsluge css i js w root
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), @"Content")),
+                RequestPath = new PathString("/Content")
+            });
+
             app.UseSession();
             app.UseMvc(routes =>
             {

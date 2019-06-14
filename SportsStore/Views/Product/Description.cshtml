@@ -1,0 +1,28 @@
+﻿@*@model IQueryable<Product>*@
+@model Product
+@{
+    ViewData["Title"] = "Opis";
+}
+
+<h2>Opis</h2>
+<div class="row m-2">
+    <div class="col-md-3">
+        <h4>@Model.Name</h4>
+        <div>@Model.Description</div>
+    </div>
+    <div class="col-md-9 text-center ">
+        <img src="@Url.Content("~/Content/Images/" +Model.ImageName)" style="max-width:100%; height:auto;"/>
+    </div>
+</div>
+
+@*<img src="~/Content/Images/@Model.ImageName" />*@
+
+<form id="@Model.ProductID" asp-action="AddToCart" asp-controller="Cart" method="post">
+    <input type="hidden" asp-for="ProductID" />
+    <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+    <span class="card-text p-1">
+        <button type="submit" class="btn btn-danger m-3" style="float:right">
+            Dodaj do koszyka
+        </button>
+    </span>
+</form>
